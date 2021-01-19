@@ -3,7 +3,6 @@ from prometheus_client.core import GaugeMetricFamily, REGISTRY, CounterMetricFam
 from prometheus_client import start_http_server
 from fareader import FAReader
 
-
 class FACollector(object):
     callsCount=0
     failsCount=0
