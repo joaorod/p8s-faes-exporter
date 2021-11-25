@@ -3,6 +3,7 @@ from prometheus_client.core import GaugeMetricFamily, REGISTRY, CounterMetricFam
 from prometheus_client import start_http_server
 from fareader import FAReader
 
+
 class FACollector(object):
     callsCount=0
     failsCount=0
@@ -28,27 +29,29 @@ class FACollector(object):
 
             yield ctime
 
-
-            vlr_per_cand = values.valor_pago/values.pagas
-            vlr_total = values.valor_pago+values.valor_remanescente
-            cand_plafond = int(vlr_total/vlr_per_cand)
-
             gcand = GaugeMetricFamily("Candidaturas", 'Numero de Candidaturas', labels=['state'])
             gcand.add_metric(['total'],values.candidaturas)
             gcand.add_metric(['validadas'],values.validadas)
             gcand.add_metric(['por_validar'],values.por_avaliar)
             gcand.add_metric(['pagas'],values.pagas)
-            gcand.add_metric(['dentro_plafond'],cand_plafond)
-            gcand.add_metric(['minha'],3294)
+            gcand.add_metric(['nao_elegiveis'],values.nao_elegiveis)
+            gcand.add_metric(['canceladas'],values.canceladas)
+
+            gcand.add_metric(['dentro_plafond'],values.cand_plafond)
+            gcand.add_metric(['minha'],25503)
+
             
             
             yield gcand
             
             gval = GaugeMetricFamily("Valores", 'Valores', labels=['state'])
-            gval.add_metric(['total'],vlr_total)
+            gval.add_metric(['total'],values.vlr_total)
             gval.add_metric(['pago'],values.valor_pago)
             gval.add_metric(['remanescente'],values.valor_remanescente)
-            gval.add_metric(['valor_por_candidatura'],vlr_per_cand)
+            gval.add_metric(['valor_por_candidatura'],values.vlr_per_cand)
+
+            gval.add_metric(['probab_sucesso'],values.probabilidade_sucesso)
+            
             
             yield gval
         except Exception as e:
