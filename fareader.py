@@ -29,9 +29,10 @@ class FAReader:
             return cell.text.replace("\n","").replace("\r","").strip()
             
         def value_from_cell(cell):
-            return float(text_from_cell(cell))
+            return float(text_from_cell(cell).replace(" ",""))
 
-        url = 'https://www.fundoambiental.pt/paes-ii/ponto-de-situacao-das-candidaturas-em-tempo-real.aspx'
+        # url = 'https://www.fundoambiental.pt/paes-ii/situacao-das-candidaturas.aspx'
+        url ='https://www.fundoambiental.pt/paes-ii.aspx'
 
         response = requests.get(url)
 
@@ -46,12 +47,12 @@ class FAReader:
                 
         # candidaturas:int            -> 1 OK
         # validadas:int = Submetidas - Em Analise
-        # por_avaliar:int             -> 14
-        # pagas:int                   -> 5:elegiveis, 17: pagas
-        # valor_pago:float            -> 6 : valor elegivel, 18: valor pago
+        # por_avaliar:int             -> 15
+        # pagas:int                   -> 6:elegiveis 
+        # valor_pago:float            -> 7 : valor elegivel
         # valor_remanescente:float    -> 3
-        # nao_elegiveis:int           -> 8
-        # canceladas:int              -> 11
+        # nao_elegiveis:int           -> 9
+        # canceladas:int              -> 12
         # probabilidade_sucesso:float 
         # vlr_per_cand:float          
         # vlr_total:float
@@ -59,12 +60,12 @@ class FAReader:
         values = FAValues(
             int(value_from_cell(cells[1]))
             ,0
-            ,int(value_from_cell(cells[14]))
-            ,int(value_from_cell(cells[5]))
-            ,value_from_cell(cells[6]) 
+            ,int(value_from_cell(cells[15]))
+            ,int(value_from_cell(cells[6]))
+            ,value_from_cell(cells[7]) 
             ,value_from_cell(cells[3])
-            ,int(value_from_cell(cells[8]))
-            ,int(value_from_cell(cells[11]))
+            ,int(value_from_cell(cells[9]))
+            ,int(value_from_cell(cells[12]))
             ,0,0,0,0
             )
 
